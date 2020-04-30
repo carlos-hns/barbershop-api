@@ -16,7 +16,7 @@ function generateToken(params = {}){
 }
 
 router.post("/register", async (req, res) => {
-    const { email, senha } = req.body;
+    const { email } = req.body;
 
     try {
 
@@ -32,6 +32,7 @@ router.post("/register", async (req, res) => {
             token: generateToken({ id: user.id }),
         });
     } catch (error){
+        console.log(error);
         return res.status(400).send({error: "Falha no Registro"});
     }
 
@@ -40,7 +41,7 @@ router.post("/register", async (req, res) => {
 router.post("/authenticate", async (req, res) => {
     const { email, senha } = req.body;
 
-    const User = await User.findOne({where: {email}});
+    const user = await User.findOne({where: {email}});
 
     if (!user) {
         return res.status(400).send({error: "Usuário não encontrado"});
@@ -52,7 +53,7 @@ router.post("/authenticate", async (req, res) => {
 
     user.senha = undefined;
 
-    res.send({
+    return res.send({
         user,
         token: generateToken({id: user.id}),
     });
