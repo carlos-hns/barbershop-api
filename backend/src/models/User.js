@@ -6,6 +6,7 @@ class User extends Model {
         super.init({
             email: DataTypes.STRING,
             senha: DataTypes.STRING,
+            nivel_acesso: DataTypes.INTEGER,
         }, {
             sequelize: connection,
             hooks: {
@@ -13,6 +14,11 @@ class User extends Model {
                     user.email = user.email.toLowerCase();
                     const hash = await bcrypt.hash(user.senha, 10);
                     user.senha = hash;
+
+                    if (user.nivel_acesso == null){
+                        user.nivel_acesso = 0;
+                    }
+
                 }
             }
         });

@@ -21,8 +21,6 @@ router.post("/", async (req, res) => {
 
     var { horario } = req.body;
 
-    //console.log(await Horario.findOne({where: {horario}, raw: true}));
-
     if (await Horario.findOne({where: {horario}})){
         return res.status(400).send("Horário já cadastrado");
     }

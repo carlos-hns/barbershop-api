@@ -11,6 +11,7 @@ require("./database/index");
 // Carregando Controllers
 require("./controllers/authController")(app);
 require("./controllers/horarioController")(app);
+require("./controllers/servicoController")(app);
 
 app.listen(3000, () => {
     console.log("API rodando...");
