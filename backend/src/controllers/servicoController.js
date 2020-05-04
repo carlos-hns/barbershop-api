@@ -16,4 +16,16 @@ router.get("/", async (req, res) => {
     return res.status(200).json(servicos.body);
 });
 
+router.post("/", async (req, res) => {
+    
+    await Servico.create(req.body);
+    return res.status(200).send("Serviço cadastrado com sucesso");
+});
+
+router.delete("/:id", async (req, res) => {
+    
+    await Servico.destroy({where: {id}});
+    return res.status(200).send("Serviço removido com sucesso");
+});
+
 module.exports = app => app.use("/servicos", router);
