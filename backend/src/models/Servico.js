@@ -22,7 +22,9 @@ class Servico extends Model {
         });
     }
 
-
+    static associate(models){
+        this.hasMany(models.Agendamento, {foreignKey: "servico_id", as: "agendamentos_servico"});
+    }
 }
 
 module.exports = Servico;

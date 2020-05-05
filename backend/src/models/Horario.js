@@ -28,8 +28,9 @@ class Horario extends Model {
         });
     }
 
-
-    
+    static associate(models){
+        this.hasMany(models.Agendamento, {foreignKey: "horario_id", as: "agendamentos_horario"});
+    }    
 }
 
 module.exports = Horario;

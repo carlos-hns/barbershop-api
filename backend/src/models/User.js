@@ -1,14 +1,8 @@
 const { Model, DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
-// NIVEL DE ACESSO
-const CLIENTE = 0;
-//const BARBEIRO = 1;
-//const PROPRIETARIO = 1;
 
-// SITUACAO: SE FOI EXCLUIDO OU NÃO
-//const EXCLUIDO = 0;
-const NAO_EXCLUIDO = 1;
+const constantes = require("../config/contantes.json");
 
 class User extends Model {
     static init(connection){
@@ -26,17 +20,21 @@ class User extends Model {
                     user.senha = hash;
 
                     if (user.nivel_acesso == null){
-                        user.nivel_acesso = CLIENTE;
+                        user.nivel_acesso = constantes.NIVEL_ACESSO.CLIENTE;
                     }
 
                     if (user.situacao == null){
-                        user.situacao = NAO_EXCLUIDO;
+                        user.situacao = constantes.SITUACAO.NAO_EXCLUIDO;
                     }
                 }
             }
         });
     }
 
+    static associate(models){
+        this.hasMany(models.Agendamento, {foreignKey: "cliente_id", as: "agendamentos_cliente"});
+        this.hasMany(models.Agendamento, {foreignKey: "barbeiro_id", as: "agendamentos_barbeiro"});
+    }
 
 }
 

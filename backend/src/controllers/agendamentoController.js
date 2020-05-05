@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(authMiddleware);
 
 const Agendamento = require("../models/Agendamento");
+const User = require("../models/User");
 
 router.post("/", async (req, res) => {
 
@@ -18,8 +19,6 @@ router.post("/", async (req, res) => {
             barbeiro_id,
         }
     });
-
-    console.log(agendamento);
 
     if (agendamento){
         return res.status(400).send("Agendamento já cadastrado");
@@ -37,8 +36,16 @@ router.post("/", async (req, res) => {
     return res.status(200).send("Agendamento cadastrado com sucesso");
 });
 
-router.get("/:user_id", (req, res) => {
+router.get("/:user_id", async (req, res) => {
 
+    const { user_id } = req.params;
+    console.log(user_id);
+
+    var user = await User.findByPk(user_id, {
+        include: { association: "agendamentos_cliente"}
+    });
+
+    res.json(user);
 });
 
 module.exports = app => app.use("/agendamentos", router);

@@ -16,9 +16,13 @@ function generateToken(params = {}){
 }
 
 router.post("/register", async (req, res) => {
-    const { email } = req.body;
+    const { email, nivel_acesso } = req.body;
 
     try {
+
+        if (nivel_acesso == 1 || nivel_acesso == 2){
+            return res.status(400).send("Você não possui permissão para modificar nível de acesso");
+        }
 
         if (await User.findOne({where: {email}})){
             return res.status(400).send({error: "Usuário já existe"});
@@ -27,6 +31,9 @@ router.post("/register", async (req, res) => {
         const user = await User.create(req.body);
 
         user.senha = undefined;
+        user.situacao = undefined;
+        user.nivel_acesso = undefined;
+
         return res.send({
             user,
             token: generateToken({ id: user.id }),
@@ -41,22 +48,31 @@ router.post("/register", async (req, res) => {
 router.post("/authenticate", async (req, res) => {
     const { email, senha } = req.body;
 
-    const user = await User.findOne({where: {email}});
+    try {
 
-    if (!user) {
-        return res.status(400).send({error: "Usuário não encontrado"});
+        const user = await User.findOne({where: {email}});
+
+        if (!user) {
+            return res.status(400).send({error: "Usuário não encontrado"});
+        }
+
+        if (!await bcrypt.compare(senha, user.senha)){
+            return res.status(400).send({error: "Senha Inválida"});
+        }
+
+        user.senha = undefined;
+        user.situacao = undefined;
+        user.nivel_acesso = undefined;
+
+        return res.send({
+            user,
+            token: generateToken({id: user.id}),
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send({error: "Falha na Autenticação"});
     }
-
-    if (!await bcrypt.compare(senha, user.senha)){
-        return res.status(400).send({error: "Senha Inválida"});
-    }
-
-    user.senha = undefined;
-
-    return res.send({
-        user,
-        token: generateToken({id: user.id}),
-    });
+    
 });
 
 module.exports = app => app.use("/auth", router);

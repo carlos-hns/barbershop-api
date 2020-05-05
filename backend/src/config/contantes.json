@@ -1,0 +1,12 @@
+{
+    "NIVEL_ACESSO": {
+
+        "CLIENTE": 0,
+        "BARBEIRO": 1,
+        "PROPRIETARIO": 2
+    },
+    "SITUACAO": {
+        "EXCLUIDO": 0,
+        "NAO_EXCLUIDO": 1
+    }
+}
