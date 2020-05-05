@@ -17,7 +17,7 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            hora_id: {
+            horario_id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 references: { model: "horarios", key: "id"},
@@ -51,6 +51,10 @@ module.exports = {
                 onUpdate: "CASCADE",
                 // MESMA LÓGICA DE CIMA
                 onDelete: "CASCADE",
+            },
+            situacao: {
+                type: Sequelize.BOOLEAN,
+                allowNull: true,
             },
             created_at: {
                 type: Sequelize.DATE,

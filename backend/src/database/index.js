@@ -13,4 +13,10 @@ Horario.init(connection);
 Servico.init(connection);
 Agendamento.init(connection);
 
+
+//User.associate(connection.models);
+//Horario.associate(connection.models);
+//Servico.associate(connection.models);
+Agendamento.associate(connection.models);
+
 module.exports = connection;

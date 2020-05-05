@@ -7,7 +7,7 @@ const NAO_EXCLUIDO = 1;
 class Servico extends Model {
     static init(connection){
         super.init({
-            servico: DataTypes.STRING,
+            nome: DataTypes.STRING,
             valor: DataTypes.DOUBLE,
             situacao: DataTypes.BOOLEAN,
         }, {
@@ -21,6 +21,8 @@ class Servico extends Model {
             }
         });
     }
+
+
 }
 
 module.exports = Servico;

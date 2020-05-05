@@ -9,9 +9,6 @@ class Agendamento extends Model {
         super.init({
             nome_pessoa: DataTypes.STRING,
             dia: DataTypes.STRING,
-            servico: DataTypes.INTEGER,
-            barbeiro: DataTypes.INTEGER,
-            cliente: DataTypes.INTEGER,
             situacao: DataTypes.BOOLEAN,
         }, {
             sequelize: connection,
@@ -23,6 +20,13 @@ class Agendamento extends Model {
                 }
             }
         });
+    }
+
+    static associate(models){
+        this.belongsTo(models.User, {foreignKey: "cliente_id", as: "agendamento_cliente"});
+        this.belongsTo(models.User, {foreignKey: "barbeiro_id", as: "agendamento_barbeiro"});
+        this.belongsTo(models.Horario, {foreignKey: "horario_id", as: "agendamento_horario"});
+        this.belongsTo(models.Servico, {foreignKey: "servico_id", as: "agendamento_servico"});
     }
 }
 
