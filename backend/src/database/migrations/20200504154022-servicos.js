@@ -18,6 +18,10 @@ module.exports = {
                 type: Sequelize.DOUBLE,
                 allowNull: false,
             },
+            situacao: {
+                type: Sequelize.BOOLEAN,
+                allowNull: true,
+            },
             created_at: {
                 type: Sequelize.DATE,
                 allowNull: false,
