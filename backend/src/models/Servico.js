@@ -1,8 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-// SITUACAO: SE FOI EXCLUIDO OU NÃO
-//const EXCLUIDO = 0;
-const NAO_EXCLUIDO = 1;
+const constantes = require("../config/contantes.json");
 
 class Servico extends Model {
     static init(connection){
@@ -15,7 +13,7 @@ class Servico extends Model {
             hooks: {
                 "beforeCreate": servico => {
                     if (servico.situacao == null){
-                        servico.situacao = NAO_EXCLUIDO;
+                        servico.situacao = constantes.SITUACAO.NAO_EXCLUIDO;
                     }
                 }
             }

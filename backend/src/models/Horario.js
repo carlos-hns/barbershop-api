@@ -1,8 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-// SITUACAO: SE FOI EXCLUIDO OU NÃO
-//const EXCLUIDO = 0;
-const NAO_EXCLUIDO = 1;
+const constantes = require("../config/contantes.json");
 
 class Horario extends Model {
     static init(connection){
@@ -21,7 +19,7 @@ class Horario extends Model {
             hooks: {
                 "beforeCreate": horario => {
                     if (horario.situacao == null){
-                        horario.situacao = NAO_EXCLUIDO;
+                        horario.situacao = constantes.SITUACAO.NAO_EXCLUIDO;
                     }
                 }
             }

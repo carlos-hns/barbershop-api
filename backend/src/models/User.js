@@ -32,8 +32,8 @@ class User extends Model {
     }
 
     static associate(models){
-        this.hasMany(models.Agendamento, {foreignKey: "cliente_id", as: "agendamentos_cliente"});
-        this.hasMany(models.Agendamento, {foreignKey: "barbeiro_id", as: "agendamentos_barbeiro"});
+        this.hasMany(models.Agendamento, {foreignKey: "cliente_id", as: "agendamentos_do_cliente"});
+        this.hasMany(models.Agendamento, {foreignKey: "barbeiro_id", as: "agendamentos_do_barbeiro"});
     }
 
 }

@@ -1,8 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-// SITUACAO: SE FOI EXCLUIDO OU NÃO
-//const EXCLUIDO = 0;
-const NAO_EXCLUIDO = 1;
+const constantes = require("../config/contantes.json");
 
 class Agendamento extends Model {
     static init(connection){
@@ -15,7 +13,7 @@ class Agendamento extends Model {
             hooks: {
                 "beforeCreate": agendamento => {
                     if (agendamento.situacao == null){
-                        agendamento.situacao = NAO_EXCLUIDO;
+                        agendamento.situacao = constantes.SITUACAO.NAO_EXCLUIDO;
                     }
                 }
             }
@@ -23,10 +21,10 @@ class Agendamento extends Model {
     }
 
     static associate(models){
-        this.belongsTo(models.User, {foreignKey: "cliente_id", as: "agendamento_cliente"});
-        this.belongsTo(models.User, {foreignKey: "barbeiro_id", as: "agendamento_barbeiro"});
-        this.belongsTo(models.Horario, {foreignKey: "horario_id", as: "agendamento_horario"});
-        this.belongsTo(models.Servico, {foreignKey: "servico_id", as: "agendamento_servico"});
+        this.belongsTo(models.User, {foreignKey: "cliente_id", as: "cliente"});
+        this.belongsTo(models.User, {foreignKey: "barbeiro_id", as: "barbeiro"});
+        this.belongsTo(models.Horario, {foreignKey: "horario_id", as: "horario"});
+        this.belongsTo(models.Servico, {foreignKey: "servico_id", as: "servico"});
     }
 }
 

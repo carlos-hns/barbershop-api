@@ -57,6 +57,7 @@ router.post("/", async (req, res) => {
 
         var newUser = await User.create(req.body);
         return res.status(200).json(newUser);
+        
     } catch(error){
         console.log(error);
         res.status(400).send("Erro na requisição");
@@ -64,10 +65,7 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-   
-
     try {
-
         var id = req.params.id;
        
         // userId vem do middleware quando passa na etapa de autenticação do token
