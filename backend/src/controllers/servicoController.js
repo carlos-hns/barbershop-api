@@ -23,6 +23,31 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/:id", async (req, res) => {
+    try {
+
+        var { id } = req.params.id;
+
+        var servico = await Servico.findOne({
+            where: {
+                id,
+                situacao: constantes.SITUACAO.NAO_EXCLUIDO
+            },
+            raw: true,
+        });
+
+        if (!servico){
+            return res.status(404).send("Serviço não cadastrado");
+        }
+
+        return res.status(200).json(servico);
+
+    } catch(error){
+        console.log(error);
+        res.status(400).send("Erro na requisição");
+    }
+});
+
 router.post("/", async (req, res) => {
     
     try {

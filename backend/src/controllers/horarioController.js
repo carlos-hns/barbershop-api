@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
         var horarios = await Horario.findAll();
 
         if (horarios.length === 0){
-            return res.status(404).send("Usúarios não cadastrados");
+            return res.status(404).send("Horarios não cadastrados");
         }
 
         return res.status(200).json(horarios.body);
@@ -22,6 +22,32 @@ router.get("/", async (req, res) => {
         console.log(error);
         res.status(400).send("Erro na requisição");
     } 
+});
+
+
+router.get("/:id", async (req, res) => {
+    try {
+
+        var { id } = req.params.id;
+
+        var horario = await Horario.findOne({
+            where: {
+                id,
+                situacao: constantes.SITUACAO.NAO_EXCLUIDO
+            },
+            raw: true,
+        });
+
+        if (!horario){
+            return res.status(404).send("Horario não cadastrado");
+        }
+
+        return res.status(200).json(horarios.body);
+
+    } catch(error){
+        console.log(error);
+        res.status(400).send("Erro na requisição");
+    }
 });
 
 router.post("/", async (req, res) => {
@@ -50,8 +76,6 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async(req,res) => {
-    
-
     try {
 
     } catch(error){
@@ -64,8 +88,6 @@ router.delete("/:id", async(req,res) => {
     if (!user.nivel_acesso === constantes.NIVEL_ACESSO.PROPRIETARIO){
         return res.status(400).send("Nível de acesso insuficiente");
     }
-
-
 
     var id = req.params.id;
 

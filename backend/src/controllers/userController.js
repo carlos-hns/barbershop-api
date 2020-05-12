@@ -36,6 +36,32 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/:id", async (req, res) => {
+    try {
+
+        var { id } = req.params.id;
+
+        var user = await Horario.findOne({
+            where: {
+                id,
+                situacao: constantes.SITUACAO.NAO_EXCLUIDO
+            },
+            raw: true,
+            attributes: ["id", "email"],
+        });
+
+        if (!user){
+            return res.status(404).send("Usuário não cadastrado");
+        }
+
+        return res.status(200).json(user);
+
+    } catch(error){
+        console.log(error);
+        res.status(400).send("Erro na requisição");
+    }
+});
+
 router.post("/", async (req, res) => {
     try {
         // userId vem do middleware quando passa na etapa de autenticação do token

@@ -117,42 +117,46 @@ router.get("/:user_id", async (req, res) => {
 
 
 router.post("/", async (req, res) => {
+    try {
+        var { dia, horario_id, barbeiro_id } = req.body;
+
+        var [dia, mes, ano] = dia.split("/");
+        var nova_data = ano + "-" + mes + "-" + dia + " 23:59";
+        dia = dia + "/" + mes + "/" + ano;
+
+        var agora = moment.utc(moment());
+        var dia_enviado = moment.utc(moment(nova_data));
 
 
-    try{
+        if (dia_enviado.isBefore(agora)){
+            return res.status(400).send("Não é possível cadastrar um dia anterior a hoje");
+        }
+
+        var agendamento = await Agendamento.findOne({
+            raw: true,
+            where: {
+                dia,
+                horario_id,
+                barbeiro_id
+            }
+        });
+
+        if (agendamento){
+            return res.status(400).send("Agendamento já cadastrado");
+        }
+
+        await Agendamento.create(req.body);
+    
+        return res.status(200).send("Agendamento cadastrado com sucesso");
 
     } catch(error){
         console.log(error);
         res.status(400).send("Erro na requisição");
     }
+});
 
+router.delete("/:id", async (req, res) => {
 
-
-
-    var {nome_pessoa, dia, horario_id, servico_id, barbeiro_id, cliente_id } = req.body;
-
-    var agendamento = await Agendamento.findOne({
-        where: {
-            dia,
-            horario_id,
-            barbeiro_id,
-        }
-    });
-
-    if (agendamento){
-        return res.status(400).send("Agendamento já cadastrado");
-    }
-
-    await Agendamento.create({
-        nome_pessoa,
-        dia,
-        horario_id,
-        servico_id,
-        barbeiro_id,
-        cliente_id
-    });
-
-    return res.status(200).send("Agendamento cadastrado com sucesso");
 });
 
 module.exports = app => app.use("/agendamentos", router);
