@@ -31,7 +31,7 @@ function validarEmail(email){
         return -1;
     }
 
-    var {email_prefixo, email_sufixo} = email.split("@");
+    var [email_prefixo, email_sufixo] = email.split("@");
 
     if (email_sufixo.indexOf(".") === -1){
         return -1;
