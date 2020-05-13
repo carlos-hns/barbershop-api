@@ -15,12 +15,42 @@ function generateToken(params = {}){
     });
 }
 
+function verificarEmail(email){
+    if (email.length == 0){
+        return -1;
+    }
+
+    // Tem email
+    return 1;
+}
+
+function validarEmail(email){
+    var temArroba = email.indexOf("@");
+    
+    if (temArroba === -1){
+        return -1;
+    }
+
+    var {email_prefixo, email_sufixo} = email.split("@");
+
+    if (email_sufixo.indexOf(".") === -1){
+        return -1;
+    }
+
+    return 1;
+}
+
+
 router.post("/register", async (req, res) => {
     const { email, nivel_acesso } = req.body;
 
     try {
 
-        if (nivel_acesso == 1 || nivel_acesso == 2){
+        if (verificarEmail(email) === -1 || validarEmail(email) === -1){
+            return res.status(400).send("Email Inválido");
+        }
+
+        if (nivel_acesso === 1 || nivel_acesso === 2){
             return res.status(400).send("Você não possui permissão para modificar nível de acesso");
         }
 
@@ -49,6 +79,10 @@ router.post("/authenticate", async (req, res) => {
     const { email, senha } = req.body;
 
     try {
+
+        if (verificarEmail(email) === -1 || validarEmail(email) === -1){
+            return res.status(400).send("Email Inválido");
+        }
 
         const user = await User.findOne({where: {email}});
 
